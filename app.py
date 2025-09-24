@@ -1,7 +1,7 @@
 import requests
 import re
 from bs4 import BeautifulSoup as bs
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 import streamlit as st
 
 headers = {
@@ -12,7 +12,7 @@ data = requests.get('https://dormi.kongju.ac.kr/HOME/sub.php?code=041303', heade
 soup = bs(data.text, 'html.parser')
 
 for i in range(3,6):
-    tmp = soup.select_one(f'.table-board > tbody:nth-child(4) > tr:nth-child({datetime.now().day%7+1}) > td:nth-child({i})').text.replace('\n',',')
+    tmp = soup.select_one(f'.table-board > tbody:nth-child(4) > tr:nth-child({datetime.now(timezone(timedelta(hours=9))).day%7+1}) > td:nth-child({i})').text.replace('\n',',')
     if i == 3:
         st.write(f'아침: {tmp}')
     elif i == 4:
